@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Production build
+dist/
+dist-ssr/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor & IDE files
+.DS_Store
+Thumbs.db
+*.local
+.vscode/
+.idea/
+.claude/
+.gemini/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Duplicate 3D model files in root (assets are inside public/)
+/3dmesh.glb
+/rock.glb
+/lucide_cintra_-_pendant_light_-_led_dim._-_5x47.glb

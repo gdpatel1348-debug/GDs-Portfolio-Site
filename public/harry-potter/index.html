@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Harry Potter — Cinematic scroll-driven experience." />
+  <title>Harry Potter — Cinematic Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- LOADING SCREEN -->
+  <div id="loader">
+    <div class="loader-box">
+      <div class="crest" aria-hidden="true">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="54" fill="none" stroke="#c9a84c"
+                  stroke-width="1.2" stroke-dasharray="10 5" opacity=".5"/>
+          <circle cx="60" cy="60" r="40" fill="none" stroke="#c9a84c"
+                  stroke-width=".7" opacity=".25"/>
+          <text x="60" y="71" text-anchor="middle" font-family="Georgia,serif"
+                font-size="42" font-weight="bold" fill="#c9a84c">H</text>
+          <text x="60"  y="16"  text-anchor="middle" font-size="11" fill="#c9a84c" opacity=".7">✦</text>
+          <text x="104" y="64"  text-anchor="middle" font-size="11" fill="#c9a84c" opacity=".7">✦</text>
+          <text x="60"  y="112" text-anchor="middle" font-size="11" fill="#c9a84c" opacity=".7">✦</text>
+          <text x="16"  y="64"  text-anchor="middle" font-size="11" fill="#c9a84c" opacity=".7">✦</text>
+        </svg>
+      </div>
+      <p class="loader-title">Harry Potter</p>
+      <div class="bar-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="bar-fill" id="barFill"></div>
+      </div>
+      <span class="bar-pct" id="barPct">0%</span>
+      <p class="loader-tag">Summoning the magic…</p>
+    </div>
+  </div>
+
+  <!--
+    SINGLE TALL PAGE.
+    #page is the scroll container — its height is set by JS.
+    #pin  is position:sticky — stays in view while #page scrolls.
+  -->
+  <div id="page">
+    <div id="pin">
+      <canvas id="c"></canvas>
+      <div id="vig"    aria-hidden="true"></div>
+      <div id="tfade"  aria-hidden="true"></div>
+      <div id="bfade"  aria-hidden="true"></div>
+      <div id="texts"  aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- Right-side scene dots -->
+  <nav id="dots" aria-label="Scene">
+    <span class="dot active" id="d0"></span>
+    <span class="dot"        id="d1"></span>
+    <span class="dot"        id="d2"></span>
+  </nav>
+
+  <!-- Scroll prompt -->
+  <div id="cue">
+    <span class="cue-txt">Scroll</span>
+    <div class="cue-mouse"><div class="cue-wheel"></div></div>
+  </div>
+
+  <!-- END TITLE SEQUENCE (shown at last ~40 frames) -->
+  <div id="endTitle">
+    <div id="endOverlay"></div>
+    <canvas id="endParticles"></canvas>
+    <!-- Title rendered entirely on canvas for AAA quality -->
+    <canvas id="endTitleCanvas" aria-label="Harry Potter end title"></canvas>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

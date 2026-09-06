@@ -1,0 +1,463 @@
+/* ================================================
+   CINEMATIC SCROLL — style.css
+   Single continuous page, no section breaks
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:   #c9a84c;
+  --goldL:  #f0d080;
+  --goldD:  #7a5c10;
+  --bg:     #04030a;
+  --cream:  #f5eed8;
+}
+
+html {
+  scroll-behavior: auto;
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Cinzel', serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SCROLL CONTAINER ──────────────────────────────
+   #page is the tall element — JS sets its height.
+   Scrolling #page moves the page; #pin stays fixed.
+   ────────────────────────────────────────────────── */
+#page {
+  width: 100%;
+  /* height set dynamically by JS */
+  position: relative;
+}
+
+#pin {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── CANVAS ── */
+#c {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── OVERLAYS — all pointer-events: none ── */
+#vig {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    transparent 48%, rgba(0,0,0,.58) 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+#tfade {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 90px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.32), transparent);
+  pointer-events: none;
+  z-index: 6;
+}
+#bfade {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%; height: 90px;
+  background: linear-gradient(to top, rgba(0,0,0,.32), transparent);
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* ── TEXT OVERLAYS ── */
+#texts {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+.txt {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  opacity: 0;
+  transition: opacity .55s ease;
+  white-space: nowrap;
+}
+.txt.on { opacity: 1; }
+.txt h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--goldL);
+  letter-spacing: .2em;
+  text-shadow:
+    0 0 40px rgba(201,168,76,.75),
+    0 2px 10px rgba(0,0,0,.95);
+}
+.txt p {
+  font-size: clamp(.6rem, 1.3vw, .88rem);
+  color: rgba(245,238,216,.6);
+  letter-spacing: .4em;
+  margin-top: 10px;
+  text-shadow: 0 1px 5px rgba(0,0,0,.9);
+  text-transform: uppercase;
+}
+
+/* ── LOADER ── */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .9s ease, visibility .9s ease;
+}
+#loader.gone { opacity: 0; visibility: hidden; }
+
+.loader-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+
+.crest {
+  width: 92px; height: 92px;
+  animation: spin 8s linear infinite;
+  filter: drop-shadow(0 0 14px rgba(201,168,76,.5));
+}
+.crest svg { width: 100%; height: 100%; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loader-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(.95rem, 2.8vw, 1.65rem);
+  color: var(--goldL);
+  letter-spacing: .38em;
+  text-shadow: 0 0 24px rgba(201,168,76,.5);
+}
+
+.bar-wrap {
+  width: min(380px, 76vw);
+  height: 2px;
+  background: rgba(201,168,76,.1);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--goldD), var(--goldL));
+  border-radius: 99px;
+  transition: width .12s linear;
+  box-shadow: 0 0 8px var(--gold);
+  position: relative;
+}
+.bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 48px; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+  animation: shim 1s ease infinite;
+}
+@keyframes shim {
+  0%   { transform: translateX(-55px); }
+  100% { transform: translateX(55px); }
+}
+
+.bar-pct {
+  font-size: .7rem;
+  letter-spacing: .25em;
+  color: var(--gold);
+  margin-top: -10px;
+  opacity: .8;
+}
+.loader-tag {
+  font-size: .63rem;
+  letter-spacing: .44em;
+  color: rgba(201,168,76,.35);
+  text-transform: uppercase;
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:.2} 50%{opacity:.72} }
+
+/* ── SCENE DOTS ── */
+#dots {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  pointer-events: none;
+}
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(201,168,76,.2);
+  border: 1px solid rgba(201,168,76,.3);
+  transition: all .4s ease;
+  display: block;
+}
+.dot.active {
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+  transform: scale(1.7);
+}
+
+/* ── SCROLL CUE ── */
+#cue {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  pointer-events: none;
+  transition: opacity .5s ease;
+}
+#cue.gone { opacity: 0; }
+.cue-txt {
+  font-size: .56rem;
+  letter-spacing: .5em;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: .6;
+}
+.cue-mouse {
+  width: 19px; height: 30px;
+  border: 1.5px solid rgba(201,168,76,.38);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+.cue-wheel {
+  width: 3px; height: 5px;
+  border-radius: 99px;
+  background: var(--gold);
+  animation: whl 1.5s ease-in-out infinite;
+}
+@keyframes whl {
+  0%       { transform: translateY(0);    opacity: 1; }
+  80%,100% { transform: translateY(11px); opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .txt { white-space: normal; padding: 0 20px; }
+  #dots { right: 8px; }
+}
+
+/* ══════════════════════════════════════════════════
+   END TITLE SEQUENCE
+   CSS: layout only — all visual effects are on canvas
+   ══════════════════════════════════════════════════ */
+
+/* ── Outer container — JS drives opacity ── */
+#endTitle {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+#endTitle.visible { opacity: 1; }
+
+/* ── Dark cinematic backdrop ── */
+#endOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,0,0,0.3)  0%,
+    rgba(0,0,0,0.62) 100%
+  );
+}
+
+/* ── Particle canvas ── */
+#endParticles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── Title canvas (full-screen, above particles) ── */
+#endTitleCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  #dots { right: 8px; }
+}
+
+
+
+/* ── Text content wrapper ── */
+#endContent {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+
+  /* Float up and down gently */
+  animation: endFloat 5s ease-in-out infinite;
+}
+
+@keyframes endFloat {
+  0%, 100% { transform: translate(-50%, calc(-50% + 0px));   }
+  50%       { transform: translate(-50%, calc(-50% - 12px)); }
+}
+
+/* ── Scale-in on mount ── */
+#endContent {
+  animation: endFloat 5s ease-in-out infinite,
+             endScaleIn 1.4s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes endScaleIn {
+  from { transform: translate(-50%, -50%) scale(1.08); }
+  to   { transform: translate(-50%, -50%) scale(1);    }
+}
+/* Override float while scale-in is active; after ~1.4s float takes over */
+#endTitle.visible #endContent {
+  animation: endScaleIn 1.4s cubic-bezier(0.16,1,0.3,1) both,
+             endFloat   5s 1.4s ease-in-out infinite;
+}
+
+/* ── Decorative stars ── */
+.end-deco {
+  font-size: clamp(.7rem, 1.5vw, 1rem);
+  letter-spacing: 1em;
+  color: var(--gold);
+  opacity: 0.55;
+  text-shadow: 0 0 12px rgba(201,168,76,.7);
+  animation: dekoPulse 3s ease-in-out infinite;
+}
+@keyframes dekoPulse {
+  0%,100% { opacity: 0.35; }
+  50%     { opacity: 0.75; }
+}
+
+/* ── Main title ── */
+.end-main {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(2.2rem, 8vw, 7rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  white-space: nowrap;
+
+  /* Gold shimmer gradient */
+  background: linear-gradient(
+    135deg,
+    #5a3e08  0%,
+    #c9a84c  25%,
+    #f5e070  50%,
+    #c9a84c  75%,
+    #5a3e08  100%
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  /* Glow layers */
+  filter:
+    drop-shadow(0 0 20px rgba(201,168,76,0.85))
+    drop-shadow(0 0 55px rgba(201,168,76,0.4))
+    drop-shadow(0 0 2px rgba(255,240,160,0.9));
+
+  /* Sweeping shimmer */
+  animation: shimmerSweep 3.5s linear infinite;
+}
+
+@keyframes shimmerSweep {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+/* ── Gold divider line ── */
+.end-divider {
+  width: clamp(80px, 20vw, 220px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(201,168,76,0.8) 30%,
+    rgba(240,208,128,1)  50%,
+    rgba(201,168,76,0.8) 70%,
+    transparent
+  );
+  box-shadow:
+    0 0 8px rgba(201,168,76,0.6),
+    0 0 20px rgba(201,168,76,0.2);
+  animation: dividerGlow 2.5s ease-in-out infinite;
+}
+@keyframes dividerGlow {
+  0%,100% { opacity: 0.6; }
+  50%     { opacity: 1;   }
+}
+
+/* ── Subtitle ── */
+.end-sub {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.7rem, 2vw, 1.2rem);
+  font-weight: 400;
+  letter-spacing: 0.55em;
+  text-transform: uppercase;
+  color: rgba(240, 208, 128, 0.75);
+  text-shadow:
+    0 0 18px rgba(201,168,76,0.65),
+    0 1px 4px rgba(0,0,0,0.9);
+  animation: subtitleFlicker 6s ease-in-out infinite;
+}
+
+/* Subtle flicker — feels magical without being distracting */
+@keyframes subtitleFlicker {
+  0%,100% { opacity: 0.75; }
+  15%     { opacity: 0.85; }
+  20%     { opacity: 0.65; }
+  25%     { opacity: 0.82; }
+  60%     { opacity: 0.78; }
+  65%     { opacity: 0.90; }
+  70%     { opacity: 0.72; }
+}
+
+@media (max-width: 600px) {
+  .end-main { white-space: normal; letter-spacing: 0.1em; }
+  #endContent { gap: 12px; padding: 0 20px; }
+}

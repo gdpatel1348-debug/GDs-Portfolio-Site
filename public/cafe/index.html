@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GourmetOS — AAA Cafe Experience</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="styles.css">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#ffba4b",
+                        "primary-container": "#ffb020",
+                        secondary: "#e9c349",
+                        "surface-lowest": "#0c0e15",
+                        surface: "#11131b",
+                        "surface-high": "#272a32",
+                        "surface-higher": "#32343d",
+                        outline: "#524533",
+                        "outline-variant": "#9f8e79",
+                        text1: "#e1e2ed",
+                        text2: "#d7c4ad"
+                    },
+                    fontFamily: {
+                        headline: ["Space Grotesk", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                        display: ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-text1 font-body overflow-x-hidden selection:bg-primary/30">
+
+    <!-- NAVIGATION 3D GLASS -->
+    <nav class="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl rounded-2xl bg-surface/80 backdrop-blur-2xl border border-outline border-opacity-30 shadow-[0_8px_32px_rgba(255,176,32,0.15)] flex justify-between items-center px-8 py-4 z-[9999] transition-all duration-500 hover:shadow-[0_8px_32px_rgba(255,176,32,0.3)] hover:border-opacity-60">
+        <div class="text-2xl font-bold tracking-tighter text-primary font-headline cursor-pointer nav-logo" onclick="goPage('home')">
+            GOURMET<span class="text-white">OS</span>
+        </div>
+        <div class="hidden md:flex items-center gap-8 font-headline tracking-widest uppercase text-xs font-semibold">
+            <a class="nav-link text-primary drop-shadow-[0_0_8px_rgba(255,176,32,0.6)] cursor-pointer" onclick="goPage('home')">Home</a>
+            <a class="nav-link text-text2 hover:text-primary transition-all duration-300 cursor-pointer" onclick="goPage('menu')">Menu</a>
+            <a class="nav-link text-text2 hover:text-primary transition-all duration-300 cursor-pointer" onclick="goPage('beverages')">Beverages</a>
+            <a class="nav-link text-text2 hover:text-primary transition-all duration-300 cursor-pointer" onclick="goPage('tables')">Tables</a>
+            <a class="nav-link text-text2 hover:text-primary transition-all duration-300 cursor-pointer" onclick="goPage('analytics')">Analytics</a>
+            <a class="nav-link text-text2 hover:text-primary transition-all duration-300 cursor-pointer" onclick="goPage('reservations')">Reserve</a>
+        </div>
+        <div class="flex items-center gap-6 text-primary">
+            <button class="bg-primary/10 text-primary border border-primary/30 hover:bg-primary hover:text-surface px-6 py-2 rounded-xl text-xs font-bold tracking-widest transition-all duration-300 hover:scale-105 active:scale-95 uppercase font-headline">Order Now</button>
+        </div>
+    </nav>
+
+    <!-- PAGE 1: HOME (HERO DASHBOARD) -->
+    <section id="page-home" class="page-sec active relative min-h-screen pt-28 pb-20 px-8 flex flex-col items-center justify-center overflow-hidden">
+        
+        <!-- 3D HERO VIDEO BACKGROUND -->
+        <div class="hero-video-container absolute inset-0 z-0 perspective-[1200px] flex items-center justify-center opacity-60">
+            <div class="video-3d-wrapper w-[140%] h-[140%] absolute rotate-x-12 rotate-y-[-5deg] scale-[1.1] transition-transform duration-[20s] ease-in-out hover:rotate-x-0 hover:rotate-y-0">
+                <video src="../Whisk_mznyeto2iwn0egok1soyydotmdnjrtllvwnm1yn.mp4" autoplay loop muted playsinline class="w-full h-full object-cover blur-[2px] opacity-80 mix-blend-screen mask-video"></video>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent z-10"></div>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMTExMzFiIj48L3JlY3Q+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiMzMjM0M2QiPjwvcmVjdD4KPC9zdmc+')] opacity-40 z-10"></div>
+        </div>
+
+        <div class="relative z-20 text-center max-w-5xl mx-auto mt-20">
+            <h4 class="text-primary font-headline tracking-[0.3em] uppercase text-sm mb-4 animate-fade-in-up">The Future of Dining</h4>
+            <h1 class="text-6xl md:text-8xl font-display font-black text-white mb-6 leading-tight tracking-tighter animate-fade-in-up" style="animation-delay: 0.1s;">
+                A Culinary <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary golden-glow-text">Masterpiece</span>
+            </h1>
+            <p class="text-text2 text-lg md:text-xl font-body font-light mb-10 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.2s;">
+                Experience seamlessly integrated luxury dining. From immersive table orchestration to pixel-perfect seasonal artifacts.
+            </p>
+            <div class="flex gap-6 justify-center animate-fade-in-up" style="animation-delay: 0.3s;">
+                <button onclick="goPage('menu')" class="bg-primary text-surface px-8 py-4 rounded-2xl font-headline font-bold uppercase tracking-widest text-sm hover:scale-105 active:scale-95 transition-all shadow-[0_0_40px_rgba(255,176,32,0.4)]">
+                    Explore Menu
+                </button>
+                <button onclick="goPage('reservations')" class="bg-surface-high border border-outline/50 text-white px-8 py-4 rounded-2xl font-headline font-bold uppercase tracking-widest text-sm hover:bg-surface-higher hover:scale-105 active:scale-95 transition-all">
+                    Book a Table
+                </button>
+            </div>
+        </div>
+
+        <!-- Floating Dashboard Cards in Hero -->
+        <div class="relative z-20 grid grid-cols-1 md:grid-cols-3 gap-6 mt-32 max-w-7xl w-full px-4 animate-fade-in-up" style="animation-delay: 0.5s;">
+            <!-- Card 1 -->
+            <div class="glass-card p-6 rounded-3xl border border-outline/20 hover:border-primary/50 transition-all duration-500 group overflow-hidden relative transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex justify-between items-start mb-8 relative z-10">
+                    <div class="p-3 rounded-xl bg-primary/20 text-primary">
+                        <span class="material-symbols-outlined">restaurant</span>
+                    </div>
+                    <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-[10px] font-bold tracking-widest uppercase">Live</span>
+                </div>
+                <div class="relative z-10">
+                    <p class="font-headline text-xs text-text2 tracking-widest uppercase mb-1">Active Orders</p>
+                    <h3 class="text-4xl font-display font-bold text-white mb-2">47</h3>
+                    <p class="text-xs text-green-400 font-medium">↑ 12% vs last hour</p>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="glass-card p-6 rounded-3xl border border-outline/20 hover:border-primary/50 transition-all duration-500 group overflow-hidden relative transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex justify-between items-start mb-8 relative z-10">
+                    <div class="p-3 rounded-xl bg-blue-500/20 text-blue-400">
+                        <span class="material-symbols-outlined">groups</span>
+                    </div>
+                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-bold tracking-widest uppercase">Peak</span>
+                </div>
+                <div class="relative z-10">
+                    <p class="font-headline text-xs text-text2 tracking-widest uppercase mb-1">Guests Seated</p>
+                    <h3 class="text-4xl font-display font-bold text-white mb-2">184</h3>
+                    <p class="text-xs text-primary font-medium">85% Capacity</p>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="glass-card p-6 rounded-3xl border border-outline/20 hover:border-primary/50 transition-all duration-500 group overflow-hidden relative transform hover:-translate-y-2">
+                <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="flex justify-between items-start mb-8 relative z-10">
+                    <div class="p-3 rounded-xl bg-purple-500/20 text-purple-400">
+                        <span class="material-symbols-outlined">payments</span>
+                    </div>
+                    <span class="px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-[10px] font-bold tracking-widest uppercase">Revenue</span>
+                </div>
+                <div class="relative z-10">
+                    <p class="font-headline text-xs text-text2 tracking-widest uppercase mb-1">Today's Sales</p>
+                    <h3 class="text-4xl font-display font-bold text-white mb-2">$8,240</h3>
+                    <p class="text-xs text-green-400 font-medium">↑ 5.2% vs yesterday</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 2: MENU -->
+    <section id="page-menu" class="page-sec hidden pt-32 pb-20 px-8 max-w-7xl mx-auto min-h-screen">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div>
+                <h1 class="text-5xl font-display font-bold text-white tracking-tight mb-2 opacity-0 animate-slide-in">Seasonal Artifacts</h1>
+                <p class="text-primary font-headline text-sm tracking-[0.2em] uppercase opacity-0 animate-slide-in" style="animation-delay: 0.1s;">Curated Culinary Collection</p>
+            </div>
+            <div class="mt-6 md:mt-0 flex gap-4 overflow-x-auto pb-2 custom-scrollbar opacity-0 animate-slide-in" style="animation-delay: 0.2s;">
+                <button class="px-6 py-2 rounded-full bg-primary text-surface text-xs font-headline font-bold uppercase tracking-widest whitespace-nowrap">Signatures</button>
+                <button class="px-6 py-2 rounded-full surface-high border border-outline/30 text-white text-xs font-headline uppercase tracking-widest hover:bg-primary/20 transition-all whitespace-nowrap">Starters</button>
+                <button class="px-6 py-2 rounded-full surface-high border border-outline/30 text-white text-xs font-headline uppercase tracking-widest hover:bg-primary/20 transition-all whitespace-nowrap">Mains</button>
+                <button class="px-6 py-2 rounded-full surface-high border border-outline/30 text-white text-xs font-headline uppercase tracking-widest hover:bg-primary/20 transition-all whitespace-nowrap">Desserts</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="menu-grid">
+            <!-- Populated via JS -->
+        </div>
+    </section>
+
+    <!-- PAGE 3: BEVERAGES -->
+    <section id="page-beverages" class="page-sec hidden pt-32 pb-20 px-8 max-w-7xl mx-auto min-h-screen">
+        <div class="relative bg-surface-lowest rounded-[3rem] overflow-hidden mb-12 border border-outline/20 p-12 lg:p-20 flex items-center shadow-2xl">
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+            <div class="relative z-10 w-full lg:w-1/2">
+                <span class="px-4 py-1 bg-primary/20 text-primary rounded-full text-[10px] font-bold tracking-widest uppercase mb-6 inline-block">Elixirs & Brews</span>
+                <h1 class="text-5xl lg:text-7xl font-display font-black text-white leading-tight mb-6">Crafted<br><span class="text-primary italic">Beverages</span></h1>
+                <p class="text-text2 text-lg mb-8 max-w-md">From specialty cold brews to masterfully mixed mocktails — every drink tells a layered story.</p>
+                <div class="flex gap-8">
+                    <div>
+                        <p class="font-headline text-[10px] tracking-widest uppercase text-outline">Varieties</p>
+                        <p class="text-3xl font-display font-bold text-white">24</p>
+                    </div>
+                    <div>
+                        <p class="font-headline text-[10px] tracking-widest uppercase text-outline">Starting at</p>
+                        <p class="text-3xl font-display font-bold text-white">$6</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="beverages-grid">
+            <!-- Populated via JS -->
+        </div>
+    </section>
+
+    <!-- PAGE 4: TABLES (Dashboard style) -->
+    <section id="page-tables" class="page-sec hidden pt-32 pb-20 px-8 max-w-7xl mx-auto min-h-screen">
+        <div class="flex justify-between items-end mb-10">
+            <div>
+                <h1 class="text-5xl font-display font-extrabold tracking-tighter text-white mb-2">Floor <span class="text-primary italic">Atelier</span></h1>
+                <p class="text-text2 font-body font-light text-lg">Real-time station monitoring and table orchestration.</p>
+            </div>
+            <div class="flex gap-4 font-headline text-xs tracking-widest">
+                <div class="flex items-center gap-2 bg-surface-high px-4 py-2 rounded-full border border-outline/20">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span> OCCUPIED: 12
+                </div>
+                <div class="flex items-center gap-2 bg-surface-high px-4 py-2 rounded-full border border-outline/20">
+                    <span class="w-2 h-2 rounded-full bg-green-400"></span> AVAILABLE: 8
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="tables-grid">
+            <!-- Populated via JS -->
+        </div>
+    </section>
+
+    <!-- PAGE 5: ANALYTICS -->
+    <section id="page-analytics" class="page-sec hidden pt-32 pb-20 px-8 max-w-7xl mx-auto min-h-screen">
+        <div class="mb-12">
+            <h1 class="text-5xl font-display font-bold text-white mb-2">Restaurant Intelligence</h1>
+            <p class="text-text2">Performance metrics and predictive insights.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="glass-card p-8 rounded-3xl border border-outline/20 lg:col-span-2">
+                <h3 class="font-headline font-bold text-xl text-white mb-6">Revenue Trajectory</h3>
+                <div class="h-64 flex items-end gap-4">
+                    <!-- Fake Bars for visual AAA look -->
+                    <div class="w-full bg-surface-higher rounded-t-xl h-[40%] relative group hover:bg-primary/50 transition-all"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] opacity-0 group-hover:opacity-100">$2.4k</span></div>
+                    <div class="w-full bg-surface-higher rounded-t-xl h-[60%] relative group hover:bg-primary/50 transition-all"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] opacity-0 group-hover:opacity-100">$3.8k</span></div>
+                    <div class="w-full bg-primary rounded-t-xl h-[85%] relative shadow-[0_0_20px_rgba(255,176,32,0.4)] group"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-primary font-bold">$5.2k</span></div>
+                    <div class="w-full bg-surface-higher rounded-t-xl h-[50%] relative group hover:bg-primary/50 transition-all"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] opacity-0 group-hover:opacity-100">$3.1k</span></div>
+                    <div class="w-full bg-surface-higher rounded-t-xl h-[70%] relative group hover:bg-primary/50 transition-all"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] opacity-0 group-hover:opacity-100">$4.4k</span></div>
+                    <div class="w-full bg-surface-higher rounded-t-xl h-[95%] relative group hover:bg-primary/50 transition-all"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] opacity-0 group-hover:opacity-100">$6.1k</span></div>
+                    <div class="w-full bg-surface-higher rounded-t-xl h-[45%] relative group hover:bg-primary/50 transition-all"><span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] opacity-0 group-hover:opacity-100">$2.8k</span></div>
+                </div>
+                <div class="flex justify-between mt-4 text-[10px] font-headline text-text2 uppercase tracking-widest">
+                    <span>Mon</span><span>Tue</span><span class="text-primary font-bold">Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl border border-outline/20">
+                <h3 class="font-headline font-bold text-xl text-white mb-6">Top Sellers</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-high transition-colors cursor-pointer">
+                        <div class="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center text-xl">🥩</div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold text-white">Dry Aged Ribeye</h4>
+                            <p class="text-[10px] text-primary">124 Orders</p>
+                        </div>
+                        <span class="font-mono text-sm font-bold">$10.1k</span>
+                    </div>
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-high transition-colors cursor-pointer">
+                        <div class="w-12 h-12 rounded-lg bg-surface-higher flex items-center justify-center text-xl">🍣</div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold text-white">Citrus Salmon</h4>
+                            <p class="text-[10px] text-text2">98 Orders</p>
+                        </div>
+                        <span class="font-mono text-sm font-bold">$4.1k</span>
+                    </div>
+                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-high transition-colors cursor-pointer">
+                        <div class="w-12 h-12 rounded-lg bg-surface-higher flex items-center justify-center text-xl">🍝</div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold text-white">Truffle Tagliatelle</h4>
+                            <p class="text-[10px] text-text2">85 Orders</p>
+                        </div>
+                        <span class="font-mono text-sm font-bold">$3.2k</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 6: RESERVATIONS -->
+    <section id="page-reservations" class="page-sec hidden pt-32 pb-20 px-8 max-w-7xl mx-auto min-h-screen flex items-center">
+        <div class="w-full max-w-4xl mx-auto glass-card rounded-[3rem] border border-outline/30 p-12 relative overflow-hidden shadow-2xl">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+            
+            <div class="relative z-10 text-center mb-12">
+                <h2 class="text-5xl font-display font-black text-white mb-4">Secure your <span class="text-primary italic">Experience</span></h2>
+                <p class="text-text2">Our VIP suite and main hall are by reservation only.</p>
+            </div>
+
+            <form class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6" onsubmit="event.preventDefault(); alert('Reservation Requested! AAA Experience incoming.');">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-headline tracking-widest uppercase text-outline">Date</label>
+                    <input type="date" class="w-full bg-surface-low border border-outline/30 rounded-xl px-4 py-4 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-headline tracking-widest uppercase text-outline">Time</label>
+                    <select class="w-full bg-surface-low border border-outline/30 rounded-xl px-4 py-4 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body appearance-none">
+                        <option>18:00 (Dinner)</option>
+                        <option>19:00 (Dinner)</option>
+                        <option>20:00 (Late Night)</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-headline tracking-widest uppercase text-outline">Guest Count</label>
+                    <select class="w-full bg-surface-low border border-outline/30 rounded-xl px-4 py-4 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body appearance-none">
+                        <option>2 Guests</option>
+                        <option>4 Guests</option>
+                        <option>VIP Suite (Up to 12)</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-headline tracking-widest uppercase text-outline">Special Requests</label>
+                    <input type="text" placeholder="Anniversary, Allergies..." class="w-full bg-surface-low border border-outline/30 rounded-xl px-4 py-4 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body bg-[rgba(25,27,35,0.4)]">
+                </div>
+                <div class="md:col-span-2 mt-6">
+                    <button type="submit" class="w-full bg-gradient-to-r from-primary to-primary-container text-surface px-8 py-5 rounded-2xl font-headline font-black uppercase tracking-widest text-sm hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_30px_rgba(255,176,32,0.3)]">
+                        Confirm Allocation
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>

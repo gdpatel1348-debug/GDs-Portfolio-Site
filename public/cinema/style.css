@@ -1,0 +1,325 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', -apple-system, sans-serif;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+}
+
+/* 20,000px scrollable playground */
+.scroll-track {
+  width: 100%;
+  height: 20000px;
+  position: relative;
+  z-index: 1;
+}
+
+.canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  transform-origin: center center;
+}
+
+.canvas-container.loaded {
+  opacity: 1;
+}
+
+#cinema-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Vignette Box Shadow Overlay */
+.vignette {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.95);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Film Grain Overlay */
+.film-grain {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4O08AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRF////AAAAMzMz7vS3OwAAAAN0Uk5T//8A18oNQQAAAFRJREFUeNpiYKAyYIQyGEaVCYfKQAaMo3IwiMrAIQODqAwiMnDIwCEzajyMmg2jFoQhVQaMowIziMrgIR2DqAwmMgjIwCEzajywmg2jFoQhVU4AEGAAz88BN2vRxyMAAAAASUVORK5CYII=");
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  z-index: 15;
+  animation: noise 0.5s steps(2) infinite;
+}
+
+@keyframes noise {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-20px, -20px); }
+}
+
+/* Text Overlay Engine */
+#text-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.cinematic-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  pointer-events: none; /* Interaction allowed solely on inner wrapper */
+  z-index: 100;
+  display: flex;
+  font-family: 'Cinzel', serif;
+  font-size: 4rem;
+  color: #fff;
+  text-shadow: 0px 10px 40px rgba(0,0,0,0.9), 0px 2px 15px rgba(255,255,255,0.15);
+  opacity: 0; 
+  filter: blur(20px);
+  will-change: opacity, transform, filter; /* GPU Hinting */
+}
+
+/* GSAP Geometry Overrides */
+.pos-center { left: 50%; transform: translate(-50%, -50%); justify-content: center; }
+.pos-left { left: 10%; transform: translate(0, -50%); justify-content: flex-start; text-align: left; }
+.pos-right { left: auto; right: 10%; transform: translate(0, -50%); justify-content: flex-end; text-align: right; }
+
+/* Inner wrapper controls hover physics isolating it from GSAP hardware math */
+.cinematic-text-inner {
+  pointer-events: auto;
+  cursor: default;
+  transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, letter-spacing, text-shadow, color;
+  display: inline-block; /* strictly fits the typography */
+}
+
+/* Macro environmental reaction on hover */
+.cinematic-text-inner:hover {
+  transform: scale(1.05) translateY(-8px) !important;
+  letter-spacing: 4px;
+  color: #fcf6e8;
+  text-shadow: 0px 20px 50px rgba(255, 200, 100, 0.6), 0px 5px 25px rgba(255,255,255,0.5);
+}
+
+/* Inter/Sans injection for word highlighting */
+.text-glow {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffffff 0%, #d4af37 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #fff; /* fallback */
+  text-shadow: 0px 0px 30px rgba(212, 175, 55, 0.6);
+  display: inline-block;
+  transition: all 0.5s ease;
+}
+
+/* Synergistic stagger reaction */
+.cinematic-text-inner:hover .text-glow {
+  text-shadow: 0px 0px 50px rgba(212, 175, 55, 1.0);
+  transform: scale(1.05);
+}
+
+/* Subtle cinematic depth tracking outline */
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.4);
+  color: transparent;
+  text-shadow: none;
+}
+
+/* Loading Overlay */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: opacity 0.8s ease-out;
+}
+
+.loader-text {
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.loader-bar-bg {
+  width: 250px;
+  height: 2px;
+  background: rgba(255,255,255,0.2);
+}
+
+.loader-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: #fff;
+  transition: width 0.1s linear;
+}
+
+/* Audio Hint UI */
+#audio-hint {
+  position: fixed;
+  bottom: 30px;
+  width: 100%;
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  z-index: 30;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* Sound Button UI */
+.sound-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 10px 20px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  border-radius: 30px;
+  cursor: pointer;
+  z-index: 200;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.sound-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sound-button.active {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  font-weight: 600;
+}
+
+/* Dev Debug UI */
+#debug-panel {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #0f0;
+  z-index: 200;
+  display: none;
+}
+
+/* -------------------------------------
+   🎬 START OVERLAY SEQUENCE
+--------------------------------------*/
+.start-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: 500;
+  display: flex;
+  align-items: flex-end; /* Mid-lower area */
+  justify-content: flex-end; /* Right side emphasis */
+  padding-right: 25%;
+  padding-bottom: 25%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.start-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.start-overlay.fade-out {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.cinematic-start-btn {
+  background: transparent;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0px 0px 15px rgba(212, 175, 55, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: pulseStartGlow 3s infinite alternate;
+  will-change: transform, text-shadow;
+}
+
+.cinematic-start-btn:hover {
+  transform: scale(1.1);
+  text-shadow: 0px 0px 30px rgba(212, 175, 55, 0.9);
+  color: #fcf6e8;
+}
+
+@keyframes pulseStartGlow {
+  0% { text-shadow: 0px 0px 10px rgba(212, 175, 55, 0.2); }
+  100% { text-shadow: 0px 0px 25px rgba(212, 175, 55, 0.7); }
+}
+
+/* Scene 8 Text System Specifics */
+.rameshwaram-text-layer {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) translateY(30px);
+  font-family: 'Cinzel', serif;
+  color: #fdf5e6;
+  letter-spacing: 0.3em;
+  font-size: 5rem;
+  text-shadow: 0px 0px 30px rgba(253, 245, 230, 0.4);
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+  text-align: center;
+  /* Pure CSS transitions handling fade & upward motion seamlessly */
+  transition: all 1s ease-out; 
+}
+
+.rameshwaram-text-layer.active-state {
+   opacity: 1;
+   transform: translate(-50%, -50%) translateY(0px);
+}
