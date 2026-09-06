@@ -26,7 +26,7 @@ const PROJECTS: ProjectData[] = [
   },
   {
     num: '02',
-    name: 'Aura Brand Identity',
+    name: 'Personal Photography by Me',
     category: 'Personal',
     col1Img1: '/aura-1.jpeg',
     col1Img2: '/aura-2.jpeg',
